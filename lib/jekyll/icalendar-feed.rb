@@ -42,8 +42,8 @@ module Jekyll
         cal.event do |e|
           # Mandatory fields
           e.uid = post.id
-          e.dtstamp = post.data.dig(:date)
-          e.dtstart = post.data.dig(:event, :dstart)
+          e.dtstamp = post.data['date']
+          e.dtstart = post.data['event']['dtstart']
 
           # Optional fields
           e.summary = post.data['title'] || "Untitled Post"
