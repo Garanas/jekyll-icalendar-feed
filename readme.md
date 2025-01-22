@@ -32,3 +32,7 @@ rake install
 
 - [iCalendar (RFC 5545)](https://www.rfc-editor.org/rfc/rfc5545)
 - [jCal (RFC 7265)](https://www.rfc-editor.org/rfc/rfc7265)
+
+### Related Jekyll plugins
+
+- [Atom (RSS-like) feed](https://github.com/jekyll/jekyll-feed)
