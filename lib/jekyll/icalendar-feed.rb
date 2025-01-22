@@ -19,10 +19,11 @@ module Jekyll
       end
     end
 
+    # @param site [Jekyll::Site]
     # @param posts [Array<Jekyll::Document>] An array of Jekyll::Document objects
     # @param config [Hash] Configuration options for the calendar
     # @return [ICalendar::Calendar]
-    def make_calendar(posts, config)
+    def make_calendar(site, config, posts)
       # Initialize a new iCalendar
       cal = Icalendar::Calendar.new
 
@@ -42,7 +43,10 @@ module Jekyll
         cal.event do |e|
           # Mandatory fields
           e.uid = post.id
-          e.dtstamp = post.data['date']
+
+          e.dtstamp = site.time
+          e.created = post.data['event']['date']
+
           e.dtstart = post.data['event']['dtstart']
 
           # Optional fields
@@ -68,7 +72,7 @@ module Jekyll
       config = site.config["icalendar_feed"] || {}
 
       # all events
-      calendar = make_calendar site.posts.docs, config
+      calendar = make_calendar site, config, site.posts.docs
       PageWithoutAFile.new(site, __dir__, "", 'news/icalendar/posts.ics').tap do |file|
         file.content = calendar.to_ical
         site.pages << file
@@ -82,7 +86,7 @@ module Jekyll
         categories_to_process = config.dig('categories') || []
         next unless categories_to_process.empty? || categories_to_process.include?(category)
 
-        calendar = make_calendar posts, config
+        calendar = make_calendar site, config, site.posts.docs
 
         PageWithoutAFile.new(site, __dir__, "", "news/icalendar/posts-#{category}.ics").tap do |file|
           file.content = calendar.to_ical
